@@ -1,7 +1,7 @@
 package net.botlify.ban.api;
 
 import net.botlify.ban.api.result.SearchResultAddress;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
