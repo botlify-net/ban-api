@@ -35,10 +35,10 @@ public class SearchAddressParam {
   public static class Position {
 
     @Getter
-    private final long latitude;
+    private final double latitude;
 
     @Getter
-    private final long longitude;
+    private final double longitude;
 
   }
 

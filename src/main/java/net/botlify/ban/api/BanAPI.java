@@ -52,6 +52,35 @@ public class BanAPI {
     }
   }
 
+  public @NotNull SearchResultAddress reverse(final double latitude,
+                                              final double longitude)
+          throws IOException {
+    return reverse(latitude, longitude, null);
+  }
+
+  public @NotNull SearchResultAddress reverse(final double latitude,
+                                              final double longitude,
+                                              @Nullable final SearchAddressParam.Type type)
+          throws IOException {
+    final HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(API_URL))
+        .newBuilder()
+        .encodedPath("/reverse/")
+        .addEncodedQueryParameter("lat", String.valueOf(latitude))
+        .addEncodedQueryParameter("lon", String.valueOf(longitude));
+    if (type != null) {
+        urlBuilder.addEncodedQueryParameter("type", type.toBanParam());
+    }
+    // Send the request and return the result mapped.
+    final Request request = new Request.Builder()
+        .url(urlBuilder.build())
+        .build();
+    try (final Response response = httpClient.newCall(request).execute()) {
+        final String body = response.body().string();
+        final ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(body, SearchResultAddress.class);
+    }
+  }
+
   private void addParamToUrl(@NotNull final HttpUrl.Builder urlBuilder,
                              @Nullable final SearchAddressParam param) {
     if (param == null) {
